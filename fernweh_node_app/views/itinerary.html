@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html ng-app="fernweh">
+
+    <script src="spin.js/spin.js"></script>
+
+    <script>
+    function myFunction() {
+        console.log("hide hua?")
+        document.getElementById("modifyBreakfast").style.display = "block";
+        document.getElementById("modifySightsee1").style.display = "block";
+        document.getElementById("modifyLunch").style.display = "block";
+        document.getElementById("modifySightsee2").style.display = "block";
+        document.getElementById("modifyDinner").style.display = "block";
+        document.getElementById("modifyDrinks").style.display = "block";
+    }
+
+  </script>
+
+    <head>
+        <title>Itinerary</title>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.2/angular.js"></script>
+        <script src="angular-cookies/angular-cookies.js"></script>		
+		<script src="javascripts/login.js" type="text/javascript"></script>
+        <script src="javascripts/app.js" type="text/javascript"></script>
+		 <!-- Angular Material Libraries -->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-animate.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-aria.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-messages.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
+        <!-- Angular Material style sheet -->
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+        <!-- Custom styles for this template-->
+        <link href="../css/navbar-static-top.css" rel="stylesheet">
+    </head>
+    <style>
+    .no-js #loader { display: none;  }
+    .js #loader { display: block; position: absolute; left: 100px; top: 0; }
+    .se-pre-con {
+      position: fixed;
+      left: 0px;
+      top: 0px;
+      width: 100%;
+      height: 100%;
+      z-index: 9999;
+      background: url(images/loader-64x/Preloader_2.gif) center no-repeat #fff;
+    }
+  </style>
+  <script>
+    $(window).load(function() {
+        // Animate loader off screen
+        $(".se-pre-con").fadeOut("slow");;
+      });
+    </script>
+    <body data-spy="scroll" data-target=".scrollspy">
+        <header></header>
+        <!-- Static navbar-->
+        <div class="se-pre-con"></div>
+        <div id="loading" style="display:block; position: fixed; left: 0px; op: 0px; width: 100%; height: 100%; z-index: 9999; background: url(images/loader-64x/Preloader_2.gif) center no-repeat #fff;">
+          <h3 style="text-align:center; vertical-align: middle">Generating a custom itinerary, just for you!</h3>
+        </div>
+        <div id="hiding" style="display:none">
+        <nav role="navigation" ng-controller="loginController" class="navbar navbar-static-top navbar-default" >
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" class="navbar-toggle collapsed"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+					</button><a href="/" class="navbar-brand">Fernweh</a>
+					<div ng-if="!isLoggedOut" layout="row">
+						<md-button href="/Profile">Profile</md-button>
+						<md-button href="/Dashboard">Dashboard</md-button>
+					</div>
+				</div>
+
+				<div class="collapse navbar-collapse" id="myNavbar">
+					<div  ng-cloak=""   md-theme="{{theme}} ">
+						<md-button ng-click="logout()" class="md-primary md-raised navbar-right navbar-items" ng-if="!isLoggedOut" >Logout</md-button>
+					</div>
+				</div>
+			</div>
+		</nav>
+        <div id="foo">
+        </div>
+        <div ng-controller="tripController">
+         <div class="container col-md-8">
+            <!-- Main component for a primary marketing message or call to action-->
+            <div class="jumbotron">
+         
+        <p><span aria-hidden="true" style = "display:inline" class="glyphicon text-primary glyphicon-search"></span> Your itinerary is as follows:
+        </p>
+        <table border="0" cellpadding="10" cellspacing="1" width="500" align="center" id="itinerary"> 
+            <tr> 
+              <td> </td>
+              <td>Place</td>
+              <td> Rating </td>
+            </tr>
+
+            <tr> 
+            <td> Breakfast at </td>
+            <td> {{breakfast[0].name}} </td>
+            <td> {{breakfast[0].stars}} </td>
+
+            <td id="modifyBreakfast" style="display:none"> <select ng-model='selected_breakfast' ng-options="x.name for x in breakfast" class='form-control' style="width:70%; float:right">
+                  <option value="">Update Breakfast</option>
+              </select>
+            </td>
+            </tr>
+            <tr>
+            <td> Visit </td>
+            <td> {{sightsee1[0].name}} </td>
+            <td> {{sightsee1[0].stars}} </td>
+            <!-- <td> {{sightsee1[0].distance}} </td> -->
+            <td id="modifySightsee1" style="display:none"> <select ng-model='selected_sightsee1' ng-options="x.name for x in sightsee1" class='form-control' style="width:70%; float:right">
+                  <option value="">Change Sightseeing place</option>
+              </select>
+            </td>
+            </tr>
+            <tr>
+            <td> Lunch at </td>
+            <td> {{lunch[0].name}} </td>
+            <td> {{lunch[0].stars}} </td>
+            <!-- td> {{lunch[0].distance}} </td> -->
+            <td id="modifyLunch" style="display:none"> <select ng-model='selected_lunch' ng-options="x.name for x in lunch" class='form-control' style="width:70%; float:right">
+                  <option value="">Change Restaurant for lunch </option>
+              </select>
+            </td>
+            </tr>
+            <tr>
+            <td> Spend your afternoon at </td>
+            <td> {{sightsee2[0].name}} </td>
+            <td> {{sightsee2[0].stars}} </td> 
+           <!--  <td> {{sightsee2[0].distance}} </td> -->
+            <td id="modifySightsee2" style="display:none"> <select ng-model='selected_sightsee2' ng-options="x.name for x in sightsee2" class='form-control' style="width:70%; float:right">
+                  <option value="">Change afternoon </option>
+              </select>
+            </td>
+            </tr>
+            <tr>
+            <td> Dinner at </td>
+            <td> {{dinner[0].name}} </td>
+            <td> {{dinner[0].stars}} </td>
+            <!-- <td> {{dinner[0].distance}} </td> -->
+            <td id="modifyDinner" style="display:none"> <select ng-model='selected_dinner' ng-options="x.name for x in dinner" class='form-control' style="width:70%; float:right">
+                  <option value="">Change Dinner Place</option>
+              </select>
+            </td>
+            </tr>
+            <div>
+            <tr ng-show="checkDrink()">
+            <td ng-show="checkDrink()"> Enjoy some drinks at {{isdrink}}</td>
+            <td ng-show="checkDrink()"> {{drinks[0].name}}</td>
+            <td ng-show="checkDrink()"> {{drinks[0].stars}}</td>
+            <!-- <td> {{drinks[0].distance}} </td> -->
+             <td ng-show="checkDrink()" id="modifyDrinks" style="display:none"> <select ng-model='selected_drinks' ng-options="x.name for x in drinks" class='form-control' style="width:70%; float:right">
+                  <option value="">Change Pub </option>
+              </select>
+            </td>
+            </tr>
+            </div>
+              
+        </table>
+
+        <br>
+        <table border="0" cellpadding="10" cellspacing="1" width="500" align="center" id="buttons_trip">
+                 <tr>
+               <td><button type="button"  style="width:100%" class="btn btn-warning form-control col-md-2" onclick="myFunction()">Modify</button>  </td>
+               <td width="250">
+                <button type="button" style="width:100%" ng-click="Update()" class="btn btn-primary btn-md form-control col-md-4">Update</button> 
+                </td>
+              </tr>
+               <br/>
+               <br>
+              <tr>
+                 <td width="250">
+                Pick Dates: <input type="date" name="tripDate" ng-model="TripDate"></td>
+               <td> <a href = "/dashboard"><button type="button" style="width:100%" ng-click="Confirm()" class="btn btn-success btn-md form-control col-md-4">Confirm</button></a> </td>
+             </tr>
+         </table>
+        </div>
+        </div>
+
+        <div class="container col-md-4">
+            <div class="jumbotron">
+              <h2>Filters</h2>
+              Like it your way? We have you sorted.
+              <form>
+                <div class="checkbox">
+                  <label><input type="checkbox" ng-model="open24" value="">Open 24 hours</label>
+                </div>
+                <div class="checkbox">
+                  <label><input type="checkbox" ng-model="freewifi" value="">Free WiFi</label>
+                </div>
+                <div class="checkbox">
+                  <label><input type="checkbox" ng-model="chinese" value="">Chinese</label>
+                </div>
+                <div class="checkbox">
+                  <label><input type="checkbox" ng-model="indian" value="">Indian</label>
+                </div>
+                <div class="checkbox">
+                  <label><input type="checkbox" ng-model="italian" value="">Italian</label>
+                </div>
+                <div class="checkbox">
+                  <label><input type="checkbox" ng-model="mexican" value="">Mexican</label>
+                </div>
+                <div class="checkbox">
+                  <label><input type="checkbox" ng-model="thai" value="">Thai</label>
+                </div>
+                <div class="checkbox">
+                  <label><input type="checkbox" ng-model="pizza" value="">Pizza</label>
+                </div>
+              </form>
+              <br>
+                <button type="button" ng-click="Filter()" class="button form-control">Update my itinerary</button>
+            </div>
+        </div>
+    </div>
+  </div>
+    </body>
+</html>

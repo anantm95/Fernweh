@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+
+
+
+<html ng-app="fernweh">
+
+    <head>
+
+        <title>Fernweh</title>
+
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.2/angular.js"></script>
+        <script src="angular-cookies/angular-cookies.js"></script>
+        <script src="javascripts/login.js" type="text/javascript"></script>
+
+        <!-- Angular Material Libraries -->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-animate.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-aria.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-messages.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+        
+        <!-- Angular Material style sheet -->
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+
+        <!-- Bootstrap style sheet-->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+    </head>
+
+    <body data-spy="scroll" data-target=".scrollspy" background="img/background.jpg" ng-init = "isLoggedOut = true">
+        <!-- Static navbar-->
+
+        <nav role="navigation" ng-controller="loginController" class="navbar navbar-static-top navbar-default" >
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" class="navbar-toggle collapsed"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                    </button><a href="/" class="navbar-brand">Fernweh</a>
+                    <div ng-if="!isLoggedOut" layout="row">
+                        <md-button href="/Profile">Profile</md-button>
+                        <md-button href="/Dashboard">Dashboard</md-button>
+                    </div>
+                </div>
+
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <div  ng-cloak=""   md-theme="{{theme}} ">
+                        <ul class="nav navbar-nav navbar-right navbar-items"  ng-if="isLoggedOut" >
+                            <md-button class="md-primary md-raised" ng-click="showDaialog($event,'logindialog.tmpl')">Log In</md-button>
+                            <md-button class="md-primary md-raised" ng-click="showDaialog($event, 'signupdialog.tmpl')">Sign Up</md-button>
+
+                        </ul>
+                        <md-button ng-click="logout()" class="md-primary md-raised navbar-right navbar-items" ng-if="!isLoggedOut" >Logout</md-button>
+                        <script type="text/ng-template" id="logindialog.tmpl">
+							<md-dialog aria-label="Log In">
+								<form name="loginForm" ng-cloak>
+									<md-toolbar>
+										<div class="md-toolbar-tools">
+											<h2>Log In</h2>
+                                  </div>
+                                </md-toolbar>
+
+                                <md-dialog-content>
+                                  <div class="md-dialog-content" layout="column">
+                                    <md-input-container>
+                                      <label>Email</label>
+                                      <input type="email" ng-model="email" name="loginInput" required>
+									  <div ng-messages="loginForm.loginInput.$error">
+										<div ng-message="required">This is required</div>
+										<div ng-message="email">Please enter a valid email address</div>
+									  </div>
+                                    </md-input-container>
+                                    <md-input-container>
+                                      <label>Password</label>
+                                      <input type="password" ng-model="password" name="passwordInput"required>
+									  <div ng-messages="loginForm.passwordInput.$error">
+										<div ng-message="required">This is required</div>
+									  </div>
+                                    </md-input-container>
+                                  </div>
+                                </md-dialog-content>
+
+                                <md-dialog-actions layout="row">
+                                  <span flex></span>
+                                  <md-button ng-click="cancel()">
+                                    Cancel
+                                  </md-button>
+                                  <md-button ng-click="login()" class="md-primary">
+                                    Log In
+                                  </md-button>
+                                </md-dialog-actions>
+                              </form>
+                            </md-dialog>
+                        </script>
+
+                        <script type="text/ng-template" id="signupdialog.tmpl">
+                            <md-dialog aria-label="Sign Up">
+                              <form name="signupForm" ng-cloak>
+                                <md-toolbar>
+                                  <div class="md-toolbar-tools">
+                                    <h2>Sign Up</h2>
+                                  </div>
+                                </md-toolbar>
+
+                                <md-dialog-content>                        
+                                  <div class="md-dialog-content" layout="column">
+                                    <md-input-container>
+                                      <label>Name</label>
+                                      <input type="text" ng-model="fullname" name="nameInput" required>
+									  <div ng-messages="signupForm.nameInput.$error">
+										<div ng-message="required">This is required</div>
+									  </div>
+                                    </md-input-container>  
+                                    <md-input-container>
+                                      <label>Email</label>
+                                      <input type="email" ng-model="email" name="emailInput" required>
+									  <div ng-messages="signupForm.emailInput.$error">
+										<div ng-message="required">This is required</div>
+										<div ng-message="email">Please enter a valid email address</div>
+									  </div>
+                                    </md-input-container>
+                                    <md-input-container>
+                                      <label>Password</label>
+                                      <input type="password" ng-model="password" required>
+									  <div ng-messages="signupForm.nameInput.$error">
+										<div ng-message="required">This is required</div>
+									  </div>
+                                    </md-input-container>
+                                    <md-input-container>
+                                      <label>Confirm Password</label>
+                                      <input type="password" ng-model="confirmpassword" required>
+									  <div ng-messages="signupForm.nameInput.$error">
+										<div ng-message="required">This is required</div>
+									  </div>
+                                    </md-input-container>                               
+                                </md-dialog-content>
+
+                                <md-dialog-actions layout="row">
+                                  <span flex></span>
+                                  <md-button ng-click="cancel()">
+                                    Cancel
+                                  </md-button>
+                                  <md-button ng-click="signup()" class="md-primary">
+                                    Sign Up
+                                  </md-button>
+                                </md-dialog-actions>
+                              </form>
+                            </md-dialog>
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div style="margin-top:50px; text-align:center;" class="col-md-12" >
+                <h1>Where do you want to go today?</h1>
+            </div>
+
+            <div style="margin-top:50px; text-align:center;" class="col-md-12" >
+
+                <div ng-controller="indexController">
+
+                    <input list="cities" name="cities" ng-model='selected' class='form-control'>
+
+                    <datalist id="cities">
+
+                        <option ng-repeat="x in cities">{{x.city}}</option>
+
+                    </datalist> 
+                    <br> 
+                    <md-button md-theme="{{theme}}" ng-click="Submit()" class="md-primary md-raised">Explore!</md-button>
+
+                </div>
+
+            </div>
+        </div>
+
+    </body>
+
+</html>

@@ -1,0 +1,42 @@
+//Adding a user trip
+
+db.users.update({ "email" : "achala@gmail.com"}, 
+{
+	"$set" :{"Trips" :[{ 
+			"Date":"01-07-2016",
+			
+			"Itinerary": 
+			{
+					"city" : "Bangalore",  
+					"Places": {
+								"Breakfast":"Mavalli Tiffin Rooms", 
+								"See":"Lalbagh",
+								"Lunch":"Krishna Bhavan", 
+								"Do":"Rapelling", 
+								"Dinner": "Truffles", 
+								"Drinks": "Brewsky"
+							  }
+
+			}
+		}]
+	}
+}
+)
+
+How to create a new collection:
+
+#Use database
+use test
+
+#Create collection 
+db.createCollection("users")
+
+#Show existing collections 
+show collections
+
+#Insert
+db.users.insert({ "email" : "achala@gmail.com", "password": "test"}, {"name":"Achala"})
+
+#Create index
+db.users.createIndex( { email: 1 } )
+

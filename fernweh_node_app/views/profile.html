@@ -1,0 +1,153 @@
+<html  ng-app="fernweh">
+<head>
+	<title>My profile</title>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.2/angular.js"></script>
+    <meta charset="utf-8">
+    <script src="angular-cookies/angular-cookies.js"></script>
+	<script src="javascripts/login.js" type="text/javascript"></script>
+
+        <!-- Angular Material Libraries -->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-animate.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-aria.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular-messages.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+        
+        <!-- Angular Material style sheet -->
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
+		
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="javascripts/profile.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	
+</head>
+
+<body data-spy="scroll" data-target=".scrollspy">
+	<header></header>
+	
+	<nav role="navigation" ng-controller="loginController" class="navbar navbar-static-top navbar-default" >
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar" class="navbar-toggle collapsed"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+				</button><a href="/" class="navbar-brand">Fernweh</a>
+				<div ng-if="!isLoggedOut" layout="row">
+					<md-button href="/Profile">Profile</md-button>
+					<md-button href="/Dashboard">Dashboard</md-button>
+				</div>
+			</div>
+
+			<div class="collapse navbar-collapse" id="myNavbar">
+				<div  ng-cloak=""   md-theme="{{theme}} ">
+					<md-button ng-click="logout()" class="md-primary md-raised navbar-right navbar-items" ng-if="!isLoggedOut" >Logout</md-button>
+				</div>
+			</div>
+		</div>
+	</nav>
+	
+<div class="container">
+	<ul class="nav nav-tabs">
+		<li class="active"><a data-toggle="tab" href="#home">Bio</a></li>
+		<li><a data-toggle="tab" href="#wishlist">Wishlist</a></li>
+		<li><a data-toggle="tab" href="#history">Trip history</a></li>
+	</ul>
+ 
+	<div class="tab-content">
+		<div id="home" ng-controller="profileController" class="tab-pane fade in active">
+		  <h3>Bio:</h3>
+		  <div class = "jumbotron">
+			  <p> Name: {{data.data.name}} </p>
+			  <p> Email: {{data.email}} </p>
+			  <p> Contact: {{data.data.Contact}}</p>
+			  <p style="display:inline"> Favorite places: <p style="display:inline" ng-repeat="x in data.data.favorite_places"> {{x}}, </p> </p>
+			  <p> About me: {{data.data.about_me}}</p>
+		  </div>
+		  
+		 
+		</div>
+
+		<div id="wishlist" ng-controller="profileController" class="tab-pane fade">
+			<span class="glyphicon glyphicon-plus" style="float: right;" ng-click="addPlace($event,'addplace.tmpl')" ></span>
+			<script type="text/ng-template" id="addplace.tmpl">
+									<md-dialog aria-label="Add place to wishlist">
+									  <form ng-cloak>
+									   
+
+										<md-dialog-content>
+										  <div class="md-dialog-content" layout="column">
+											<md-input-container>
+											  <label>Place</label>
+											  <input type="text" ng-model="place" required>
+											</md-input-container>
+											
+										  </div>
+										</md-dialog-content>
+
+										<md-dialog-actions layout="row">
+										  <span flex></span>
+										  <md-button ng-click="cancel()">
+											Cancel
+										  </md-button>
+										  <md-button ng-click="add()" class="md-primary">
+											Add
+										  </md-button>
+										</md-dialog-actions>
+									  </form>
+									</md-dialog>
+			</script>
+			<h3>My wishlist:</h3>
+			<div class = "jumbotron">
+				<div ng-repeat="item in data.data.wishlist track by $index"> 
+						<li>{{item}}</li>
+				</div>
+			</div>
+		</div>
+		<div id="history" ng-controller="profileController" class="tab-pane fade">
+			<h3>Trip history:</h3>
+			<p>You have already visited the following places:</p>
+			<div class = "jumbotron">
+
+				<table class="table table-hover" ng-repeat="item in data.data.Trips track by $index"  align="center" ng-show="checkDate(item.Date)"> 
+					<caption> {{item.Date}} : {{item.Itinerary.city}} </caption>
+					<tr> <th> Place </th> <th> Address </th> </tr>
+
+					<tr> 
+					<td>Breakfast at</td>
+					<td> {{item.Itinerary.Places.Breakfast}} </td>
+					</tr>
+					<tr>
+					<td> Visit </td>
+					<td> {{item.Itinerary.Places.See}} </td>
+					
+					</tr>
+					<tr>
+					<td> Lunch at </td>
+					<td> {{item.Itinerary.Places.Lunch}} </td>
+					
+					</tr>
+					<tr>
+					<td> Spend your afternoon at </td>
+					<td> {{item.Itinerary.Places.Do}} </td> 
+					
+					</tr>
+					<tr>
+					<td> Dinner at </td>
+					<td> {{item.Itinerary.Places.Dinner}} </td>
+					
+					</tr>
+					<tr>
+					<td> Enjoy some drinks at </td>
+					<td> {{item.Itinerary.Places.Drinks}}</td>
+					 
+					</tr>
+					  
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+	
+<br/>
+
+</body>
+</html>
